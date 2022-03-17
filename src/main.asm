@@ -58,6 +58,8 @@ scanline:
 
 finishscan: 
 
+	xor     a       : ld    (de),a						; ensure end of filename has a zero 
+
         call    getbank                                                         ; ask OS for free bank
         nextreg MMU4_8000_54,a                                                  ; place in slot 4 / $8000
 
@@ -66,7 +68,6 @@ finishscan:
         ld      bc,interrupt_end- ctc_code
         ldir
 
-        xor     a       : ld    (de),a						; ensure end of filename has a zero 
 
         call    start_ctc_player                                                ; start player 
 
