@@ -46,22 +46,22 @@ start_ctc_player:
 		ld	    (int_stack_out+1),sp 			        				; store stack before interrupt 
 		ld	    sp,stack_top					        				; set stack to stack_top 
 
-        ld      hl,textbuffer                                           ; open the file 
+		ld      hl,textbuffer                                           ; open the file 
 
-        call    open_file
+		call    open_file
 
-        call    read_data_a                                             ; read chunks to ram 
-        call    read_data_b
+		call    read_data_a                                             ; read chunks to ram 
+		call    read_data_b
 
-        call    ctc_startup    											; call ctc_startup 
+		call    ctc_startup    											; call ctc_startup 
 wait_loop: 
 
 		ld 		a,(chunkloadflag)										; check if we reached the end of file flag
 		cp 		3  
 		jr		z, end_wait_loop
 
-        ld      a,0      												; else read keys for any pressed 
-        out     ($fe),a  
+		ld      a,0      												; else read keys for any pressed 
+		out     ($fe),a  
 		xor 	a
 		in 		a,(#fe)
 		cpl
@@ -170,8 +170,8 @@ ctc_startup:
 		;                               IMPETCRV	; Bits 7-0
 		ld		a,%10101101				; / 256
 		out		(c),a					; Control word
-        ld      a,192
-        out     (c),a 
+		ld      a,192
+		out     (c),a 
 		;ld		a,(hl)
 		;outinb							; Time constant		
 
@@ -183,23 +183,23 @@ ctc_startup:
 ; Interrupts routines 
 
 raster_line:	
-        ei 
+		ei 
 		push	af  ;11
-        push    hl  ;11
-        push    de  ;11
-        push    bc  ;11
-        push    ix  ;15 
-        
+		push    hl  ;11
+		push    de  ;11
+		push    bc  ;11
+		push    ix  ;15 
+		
 
 		ld      a,(raster_frame)
 		inc	    a
 		ld	    (raster_frame),a
 
 		pop     ix 
-        pop     bc
-        pop     de
-        pop     hl
-        pop     af
+		pop     bc
+		pop     de
+		pop     hl
+		pop     af
 		reti
 
 
@@ -311,7 +311,7 @@ skipload2:
 read_data_a:
 
 		ld      hl,CTCBASE*256
-        push 	hl : pop ix
+		push 	hl : pop ix
 		ld      bc,CTCSIZE*256
 		ld      a,(filehandle2)
 		ESXDOS  F_READ 
@@ -325,7 +325,7 @@ read_data_a:
 read_data_b:
 
 		ld      hl,(CTCBASE+CTCSIZE)*256
-        push 	hl : pop ix
+		push 	hl : pop ix
 		ld      bc,CTCSIZE*256
 		ld      a,(filehandle2)
 		ESXDOS  F_READ
@@ -346,11 +346,11 @@ end_of_file:
 open_file:		
 		; open a file and set file handle 
 
-        push hl : push 	hl : pop ix
+		push hl : push 	hl : pop ix
 		ld      a,(filehandle2)
 		ESXDOS	F_CLOSE
 		pop 	hl 
-        push 	hl : pop ix
+		push 	hl : pop ix
 		ld      a,'*'
 		ld      b,FA_READ
 		ESXDOS  F_OPEN
@@ -359,7 +359,7 @@ open_file:
 
 openerror:
 
-	    ld		hl,error_opening
+		ld		hl,error_opening
 		call 	print_rst16
 
 		jp 		int_stack_out 
@@ -402,16 +402,16 @@ sample_start:
 	dw      CTCBASE*256
 			
 raster_frame:
-    	db  	0
+		db  	0
 
 ;------------------------------------------------------------------------------
 ; Stack reservation
 STACK_SIZE      equ     100
 
 stack_bottom:
-        defs    STACK_SIZE * 2
+		defs    STACK_SIZE * 2
 stack_top:
-        defw    0
+		defw    0
 
 		ent 														; end if relocation code 
 interrupt_end: 		 
