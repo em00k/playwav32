@@ -7,7 +7,7 @@
 ; - Support mono files (code already exists)
 ; - detect WAV header and set playback speed / mode 
 ; - Need to backup CPU speed..... 
-
+; - currently doesnt detect video mode for timning 
 
         SLDOPT COMMENT WPMEM, LOGPOINT, ASSERTION
         DEVICE ZXSPECTRUMNEXT
