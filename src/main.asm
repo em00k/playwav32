@@ -6,7 +6,8 @@
 ; - check for WAV header 
 ; - Support mono files (code already exists)
 ; - detect WAV header and set playback speed / mode 
-; 
+; - Need to backup CPU speed..... 
+
 
         SLDOPT COMMENT WPMEM, LOGPOINT, ASSERTION
         DEVICE ZXSPECTRUMNEXT
