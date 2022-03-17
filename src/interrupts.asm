@@ -43,8 +43,8 @@ ctc_code:
 
 start_ctc_player:
 
-        ld	    (int_stack_out+1),sp                        ; store stack before interrupt 
-        ld	    sp,stack_top                                ; set stack to stack_top 
+        ld      (int_stack_out+1),sp                        ; store stack before interrupt 
+        ld      sp,stack_top                                ; set stack to stack_top 
 
         ld      hl,textbuffer                               ; open the file 
 
@@ -56,17 +56,17 @@ start_ctc_player:
         call    ctc_startup                                 ; call ctc_startup 
 wait_loop: 
 
-        ld 		a,(chunkloadflag)                           ; check if we reached the end of file flag
-        cp 		3  
-        jr		z, end_wait_loop
+        ld      a,(chunkloadflag)                           ; check if we reached the end of file flag
+        cp      3  
+        jr      z, end_wait_loop
 
         ld      a,0                                         ; else read keys for any pressed 
         out     ($fe),a  
-        xor 	a
-        in 		a,(#fe)
+        xor     a
+        in      a,(#fe)
         cpl
-        and 	15
-        jr 		z,wait_loop
+        and     15
+        jr      z,wait_loop
 
 end_wait_loop:
 
@@ -76,44 +76,44 @@ end_wait_loop:
         nextreg INTEN0,%10000001                            ; Interrupt enable DISABLE
         nextreg INTEN1,%00000000  
         
-        call 	close_file
+        call    close_file
 int_stack_out: 
 
-        ld		sp,0                                        ; stack saved from above 
-        jp 		finish                                      ; exit interrupts routines 
+        ld      sp,0                                        ; stack saved from above 
+        jp      finish                                      ; exit interrupts routines 
 
 ctc_startup:	
 
         di                                                  ; Set stack and interrupts
         
-        ld	    hl,vector_table                             ; 252 (FCh)
-        ld	    a,h
-        ld	    i,a
-        im	    2
-        inc	    a                                           ; 253 (FDh)
-        ld	    b,l                                         ; Build 257 BYTE INT table
+        ld      hl,vector_table                             ; 252 (FCh)
+        ld      a,h
+        ld      i,a
+        im      2
+        inc     a                                           ; 253 (FDh)
+        ld      b,l                                         ; Build 257 BYTE INT table
 
 .irq:	
-        ld	    (hl),a
-        inc	    hl
-        djnz	.irq                                        ; B = 0
-        ld	    (hl),a
+        ld      (hl),a
+        inc     hl
+        djnz    .irq                                        ; B = 0
+        ld      (hl),a
 
-        ld	    a,$FB                                       ; EI
-        ld	    hl,$4DED                                    ; RETI
-        ld	    (irq_vector-1),a
-        ld	    (irq_vector),hl
+        ld      a,$FB                                       ; EI
+        ld      hl,$4DED                                    ; RETI
+        ld      (irq_vector-1),a
+        ld      (irq_vector),hl
 
         nextreg VIDEO_INTERUPT_CONTROL_NR_22,%00000100
         nextreg VIDEO_INTERUPT_VALUE_NR_23,255
 
         xor     a 
-        ld		bc,192
+        ld      bc,192
         ld      de,raster_line
         ld      (raster_frame),a
         
-        ld 		a,i 
-        ld		h,a
+        ld      a,i 
+        ld      h,a
         ld		l,0
         ld		(hl),e                                      ; Set LINE interrupt
         inc		l
