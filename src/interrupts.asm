@@ -60,9 +60,8 @@ wait_loop:
         cp      3  
         jr      z, end_wait_loop
 
-        ld      a,0                                         ; else read keys for any pressed 
+        xor     a 
         out     ($fe),a  
-        xor     a
         in      a,(#fe)
         cpl
         and     15
